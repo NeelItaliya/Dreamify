@@ -33,6 +33,7 @@ export class DreamAudioEngine {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       this.context = new AudioContext();
       await this.context.resume();
+      if (this.stopped) return;
       this.master = this.context.createGain();
       this.master.gain.value = 0.0001;
       this.master.connect(this.context.destination);
@@ -53,6 +54,7 @@ export class DreamAudioEngine {
 
       this.release(duration.release);
     } catch (error) {
+      if (this.stopped) return;
       this.onError(error instanceof Error ? error : new Error("Session playback failed"));
     }
   }
@@ -114,7 +116,7 @@ export class DreamAudioEngine {
 
   // Dismiss/stop icon: still cross-fades (never a hard stop), just quickly.
   dismiss() {
-    if (this.stopped || !this.context) {
+    if (this.stopped || !this.context || !this.master) {
       this.stop();
       return;
     }

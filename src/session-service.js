@@ -4,6 +4,8 @@
 // Swapping this file's internals for real `fetch` calls to the eventual
 // AWS API Gateway / Lambda endpoints should not require touching callers.
 
+import { estimateReadSeconds } from "./governance-filter.js";
+
 const FALLBACK_SCRIPT =
   "There is a quiet warmth... somewhere close, somewhere familiar. " +
   "A soft sound, like distant water. Nothing to hold onto. Nothing to find. " +
@@ -13,11 +15,6 @@ const sessions = new Map();
 
 function delay(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
-}
-
-function estimateReadSeconds(text) {
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
-  return Math.max(15, Math.min(120, Math.round(words / 2.5)));
 }
 
 export async function createProfile({ intentText, desiredTone, userId = null }) {
@@ -42,7 +39,7 @@ export async function generateScript({ profileId }) {
     session_id: crypto.randomUUID(),
     profile_id: profileId,
     script_text: scriptText,
-    script_seconds: estimateReadSeconds(scriptText),
+    script_seconds: Math.round(estimateReadSeconds(scriptText)),
     audio_url: null,
     voice_id: "en-IN-Neural2-A",
     status: "generated",

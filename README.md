@@ -21,7 +21,7 @@ npm run dev
 
 - First-use disclaimer overlay (relaxation tool, no medical/psychological claims, no guaranteed outcome).
 - Intent Input screen: free-text intent + 6 tone presets (calm, nostalgic, warm, release, ocean, quiet).
-- Session Player screen: full-screen dark, no progress bar/timer/branding, only a small dismiss icon; drives a 3-stage `DreamAudioEngine` (stabilize → prime → release) with `GainNode` cross-fades, never a hard stop.
+- Session Player screen: full-screen, light, and deliberately low-stimulation, with no progress bar/timer/branding and only a small dismiss icon; drives a 3-stage `DreamAudioEngine` (stabilize → prime → release) with `GainNode` cross-fades, never a hard stop.
 - Settings screen: silence-only mode toggle, session-length preference (short/standard/long), local "delete my data" action.
 
 ## What is not implemented yet
